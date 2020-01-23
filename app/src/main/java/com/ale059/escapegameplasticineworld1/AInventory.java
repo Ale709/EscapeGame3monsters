@@ -5,6 +5,7 @@ package com.ale059.escapegameplasticineworld1;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+// test comment 2
 import java.util.ArrayList;
 import java.util.HashMap;
 
