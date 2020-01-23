@@ -1,5 +1,7 @@
 package com.ale059.escapegameplasticineworld1;
 
+
+// test commit1
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
