@@ -52,7 +52,8 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     public void onResume()
     {
-        startService(new Intent(this, ABgMusicService.class));
+        if (app.IsMusicOn==1)
+            startService(new Intent(this, ABgMusicService.class));
 
         super.onResume();
     }
@@ -60,7 +61,8 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     public void onPause()
     {
-        stopService(new Intent(this, ABgMusicService.class));
+        if (app.IsMusicOn==1)
+            stopService(new Intent(this, ABgMusicService.class));
 
         super.onPause();
     }

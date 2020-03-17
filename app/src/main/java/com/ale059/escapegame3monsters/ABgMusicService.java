@@ -6,7 +6,7 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 
 public class ABgMusicService extends Service {
-    MediaPlayer player;
+    MediaPlayer player = null;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -23,13 +23,23 @@ public class ABgMusicService extends Service {
 
     @Override
     public void onDestroy() {
-        //Toast.makeText(this, "My Service Stopped", Toast.LENGTH_LONG).show();
-        player.stop();
+        if (player != null)
+            player.stop();
     }
 
     @Override
     public void onStart(Intent intent, int startid) {
-        //Toast.makeText(this, "My Service Started", Toast.LENGTH_LONG).show();
-        player.start();
+        if (player != null)
+            player.start();
+    }
+
+    public static void StartPlayback()
+    {
+        app.getContext().startService(new Intent(app.getContext(), ABgMusicService.class));
+    }
+
+    public static void StopPlayback()
+    {
+        app.getContext().stopService(new Intent(app.getContext(), ABgMusicService.class));
     }
 }

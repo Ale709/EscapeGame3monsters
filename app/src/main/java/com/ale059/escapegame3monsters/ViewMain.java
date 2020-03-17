@@ -172,9 +172,9 @@ public class ViewMain extends View {
         int nX = Float.valueOf( event.getX() ).intValue();
         int nY = Float.valueOf( event.getY() ).intValue();
 
-        if (event.getAction() != MotionEvent.ACTION_UP)
+        /*if (event.getAction() != MotionEvent.ACTION_UP)
             ;
-        else if (mRectInventory.contains(nX, nY))
+        else */if (mRectInventory.contains(nX, nY))
         {
             nX = Float.valueOf( (event.getX()-mRectInventory.left)/mRectInventory.width()*SIZE_IN_MEMORY ).intValue();
             nY = Float.valueOf( (event.getY()-mRectInventory.top)/mRectInventory.height()*SIZE_INV).intValue();

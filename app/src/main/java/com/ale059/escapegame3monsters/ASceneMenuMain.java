@@ -1,5 +1,7 @@
 package com.ale059.escapegame3monsters;
 
+import android.content.Intent;
+
 public class ASceneMenuMain extends AScene {
 
     public ASceneMenuMain()
@@ -12,11 +14,15 @@ public class ASceneMenuMain extends AScene {
         addSprite("menu_continue_d", R.drawable.menu_continue_d, 217, 595, false, false);
         addSprite("menu_about", R.drawable.menu_about, 278, 762, true, true);
         addSprite("menu_music", R.drawable.icon_music, 593, 981, true, true);
-        addSprite("menu_music_off", R.drawable.icon_off, 565, 966, true, true);
+        addSprite("menu_music_off", R.drawable.icon_off, 565, 966, false, false);
         addSprite("menu_sound", R.drawable.icon_sound, 311, 977, true, true);
-        addSprite("menu_sound_off", R.drawable.icon_off, 284, 966, true, true);
+        addSprite("menu_sound_off", R.drawable.icon_off, 284, 966, false, false);
 
         //addSprite("exit", R.drawable.inv_down, 422, 904, true, true);
+        if (0==app.IsMusicOn)
+            showAndHideSprites("menu_music_off", "", 0);
+        if (0==app.IsSoundOn)
+            showAndHideSprites("menu_sound_off", "", 0);
     }
 
 
@@ -28,8 +34,30 @@ public class ASceneMenuMain extends AScene {
         String sID = poSprite.ID;
         if (sID.equals("menu_new"))
             app.SceneMenu = null;
-        else if (sID.equals("speech_1"))
-            ;
+        else if (sID.equals("menu_music"))
+        {
+            app.IsMusicOn = (app.IsMusicOn==0 ? 1 : 0);
+            if (app.IsMusicOn==0) {
+                showAndHideSprites("menu_music_off", "", 0);
+                ABgMusicService.StopPlayback();
+            }
+            else if (app.IsMusicOn==1) {
+                showAndHideSprites("", "menu_music_off", 0);
+                ABgMusicService.StartPlayback();
+            }
+            app.egWriteSingleSetting("Setting_Music_On", app.IsMusicOn );
+        }
+        else if (sID.equals("menu_sound"))
+        {
+            app.IsSoundOn = (app.IsSoundOn==0 ? 1 : 0);
+            if (app.IsSoundOn==0) {
+                showAndHideSprites("menu_sound_off", "", 0);
+            }
+            else if (app.IsSoundOn==1) {
+                showAndHideSprites("", "menu_sound_off", 0);
+            }
+            app.egWriteSingleSetting("Setting_Sound_On", app.IsSoundOn );
+        }
 
     }
 

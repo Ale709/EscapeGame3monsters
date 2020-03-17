@@ -2,6 +2,7 @@ package com.ale059.escapegame3monsters;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -25,6 +26,11 @@ public class app extends Application {
     }
 
     private static Context mBaseContext = null;
+    public static final String FILENAME_SETTINGS = "ASettings.cfg";
+    private static SharedPreferences mSettings = null;
+
+    public static int IsMusicOn = 0;
+    public static int IsSoundOn = 0;
 
     @Override
     public void onCreate()
@@ -32,6 +38,11 @@ public class app extends Application {
         mBaseContext = getBaseContext();
 
         singleton = this;
+
+        mSettings = mBaseContext.getSharedPreferences(FILENAME_SETTINGS, Context.MODE_PRIVATE);
+
+        IsMusicOn = app.egReadSingleSettingInt("Setting_Music_On", 1);
+        IsSoundOn = app.egReadSingleSettingInt("Setting_Sound_On", 1);
 
         app.egPrepareSound( R.raw.snd_boilering );
         app.egPrepareSound( R.raw.snd_bones );
@@ -49,7 +60,6 @@ public class app extends Application {
         app.egPrepareSound( R.raw.snd_tap );
         app.egPrepareSound( R.raw.snd_web_wipe );
         //app.egPlaySound( R.raw.snd_item_take );
-
 
         egCreateItemsAndInventory();
         egCreateScenes();
@@ -112,6 +122,7 @@ public class app extends Application {
     protected static HashMap<String, Integer> ListEventValues = new HashMap<String, Integer>();
 
     //public static int EG_CODE_TREES = 13232;
+
 
     public static void egCreateItemsAndInventory()
     {
@@ -351,6 +362,22 @@ public class app extends Application {
     {
         Integer nValue = new Integer(pnValue);
         ListEventValues.put( psEventID, nValue );
+
+        egWriteSingleSetting("Event_"+psEventID, nValue);
+    }
+
+    public static void egWriteSingleSetting(String psSettingID, int pnValue)
+    {
+        SharedPreferences.Editor editor = mSettings.edit();
+        editor.putInt(psSettingID, pnValue);
+        editor.apply();
+    }
+
+    public static int egReadSingleSettingInt(String psSettingID, int pnDefaultValue)
+    {
+        if (mSettings.contains( psSettingID ))
+            return mSettings.getInt( psSettingID, pnDefaultValue);
+        return pnDefaultValue;
     }
 
 }

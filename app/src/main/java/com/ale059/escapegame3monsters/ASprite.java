@@ -81,14 +81,20 @@ public class ASprite {
     public void setVisible(boolean pbIsVisible, long pnTime)
     {
         long nCurTime = Calendar.getInstance().getTimeInMillis();
+        int nDstVisibility = (pbIsVisible == true ? 255 : 0); // 255-visible, 0-invisible
 
-        if (mDstVisibilityTimeE < nCurTime) {
-            int nDstVisibility = (pbIsVisible == true ? 255 : 0); // 255-visible, 0-invisible
+        if (pnTime==0)
+        {
+            mCurVisibility = mDstVisibility = nDstVisibility;
+            mDstVisibilityTimeS = mDstVisibilityTimeE = nCurTime;
+
+        } else  if (mDstVisibilityTimeE < nCurTime) {
             if (mCurVisibility!=nDstVisibility || mDstVisibility!=nDstVisibility) {
                 mDstVisibility = nDstVisibility;
                 mDstVisibilityTimeS = nCurTime;
                 mDstVisibilityTimeE = mDstVisibilityTimeS + pnTime;
             }
+
         }
 
         //isVisible = true;
