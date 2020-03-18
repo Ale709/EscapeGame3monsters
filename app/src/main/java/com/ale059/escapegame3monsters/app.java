@@ -184,6 +184,13 @@ public class app extends Application {
             ActiveScene = oScene;
     }
 
+    public static void egOpenMenuScene( int pnSceneNum )
+    {
+        AScene oScene = ListScenes.get( pnSceneNum );
+        if (oScene != null)
+            SceneMenu = oScene;
+    }
+
     public static void egAddToInventory( String psItemID )
     {
         AItem oNewItem = Inventory.ItemsHold_Add(psItemID);
@@ -347,7 +354,8 @@ public class app extends Application {
 //            mp.start();
         int nSoundID = egPrepareSound( pnResID );
         if (mSoundPool != null)
-            mSoundPool.play(nSoundID, 1,1,1,0,1);
+            if (app.IsSoundOn==1)
+                mSoundPool.play(nSoundID, 1,1,1,0,1);
     }
 
     public static int egGetProgressEventValue( String psEventID )

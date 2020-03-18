@@ -34,6 +34,10 @@ public class ASceneMenuMain extends AScene {
         String sID = poSprite.ID;
         if (sID.equals("menu_new"))
             app.SceneMenu = null;
+
+        else if (sID.equals("menu_continue"))
+            app.SceneMenu = null;
+
         else if (sID.equals("menu_music"))
         {
             app.IsMusicOn = (app.IsMusicOn==0 ? 1 : 0);

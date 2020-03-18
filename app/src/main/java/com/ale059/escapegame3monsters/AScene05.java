@@ -23,11 +23,14 @@ public class AScene05 extends AScene {
         addSprite("cauldron",0, 410, 577,234,230, true, true);
         addSprite("potion",R.drawable.s5_potion, 850, 731,60,99, false, true);
 
-        //addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
-        addSprite("prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+        ////addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
+        //addSprite("prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+        addControlButtons("prev_scene");
 
         addSprite("cat_medal",R.drawable.s5_cat_medal, 0, 0, false, true);
-        addSprite("exit", R.drawable.inv_down, 422, 904, false, true);
+        //addSprite("exit", R.drawable.inv_down, 422, 904, false, true);
+        addControlButtons("exit,menu,hint");
+        showAndHideSprites("", "exit", 0);
     }
 
     @Override
@@ -144,6 +147,8 @@ public class AScene05 extends AScene {
                 app.egSetProgressEventValue("s5_broom_take", 1);
             }
         }
+
+        super.onSpriteTouch(poSprite, pX, pY);
     }
 
 

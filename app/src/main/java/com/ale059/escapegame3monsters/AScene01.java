@@ -36,8 +36,9 @@ public class AScene01 extends AScene {
         addSprite("speech_5", R.drawable.s1_sp3_2, 427, 205, false, true);
         addSprite("speech_6", R.drawable.s1_sp3_3, 686, 381, false, true);
 
-        addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
-        addSprite( "prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+        //addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
+        //addSprite( "prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+        addControlButtons("next_scene,prev_scene,menu,hint");
 
         switchTalkClouds1();
         mTimer.StartTimer(1500, onTimerCallback);
@@ -149,6 +150,11 @@ public class AScene01 extends AScene {
                 }
             }
         }
+        //if (sID.equals("menu")) {
+        //    app.SceneMenu = app.ListScenes.get( app.SCENE_MENU_MAIN );
+        //}
+
+        super.onSpriteTouch(poSprite, pX, pY);
     }
 
     @Override

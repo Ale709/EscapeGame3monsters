@@ -39,14 +39,17 @@ public class AScene04 extends AScene {
 
 //        addSprite("pinkwater",R.drawable.s5_pinkwater, 424, 571, false, true);
 
-        addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
-        addSprite("prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+        //addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
+        //addSprite("prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+        addControlButtons("next_scene,prev_scene");
 
 
         addSprite("s4_books",R.drawable.s4books_bg, 0, 0, ViewMain.SIZE_IN_MEMORY, ViewMain.SIZE_IN_MEMORY, false, true);
         addSprite("s4_picture",R.drawable.s4picture_bg, 0, 0, ViewMain.SIZE_IN_MEMORY, ViewMain.SIZE_IN_MEMORY, false, true);
 
-        addSprite("exit", R.drawable.inv_down, 422, 904, false, true);
+        //addSprite("exit", R.drawable.inv_down, 422, 904, false, true);
+        addControlButtons("exit,menu,hint");
+        showAndHideSprites("", "exit", 0);
 
     }
 
@@ -133,6 +136,8 @@ public class AScene04 extends AScene {
         else if (sID.equals("door_3t")) {
             app.egPlaySound( R.raw.snd_success );
         }
+
+        super.onSpriteTouch(poSprite, pX, pY);
     }
 
     @Override

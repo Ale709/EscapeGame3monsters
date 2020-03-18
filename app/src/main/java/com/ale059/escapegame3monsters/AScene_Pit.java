@@ -11,7 +11,8 @@ public class AScene_Pit extends AScene {
         addSprite("bone", R.drawable.s2pit_bone, 175, 422, true, true);
         addSprite("worm",R.drawable.s2pit_worm, 705,  361, true, true);
 
-        addSprite("exit", R.drawable.inv_down, 422, 904, true, true);
+        //addSprite("exit", R.drawable.inv_down, 422, 904, true, true);
+        addControlButtons("exit,menu,hint");
 
     }
 

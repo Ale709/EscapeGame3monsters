@@ -23,15 +23,18 @@ public class AScene02 extends AScene {
         addSprite("pit_ground", 0, 228, 871, 205, 116, true, true);
 
 
-        addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
-        addSprite("prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+        //addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
+        //addSprite("prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+        addControlButtons("next_scene,prev_scene");
 
         addSprite("under_tree_1",R.drawable.s2_under_tree_1, 0, 0, false, true);
         addSprite("under_tree_2",R.drawable.s2_under_tree_2, 0, 0, false, true);
         addSprite("under_tree_3",R.drawable.s2_under_tree_3, 0, 0, false, true);
         mSpriteMushroom = addSprite("mushroom",R.drawable.s2_mushroom, 476, 548, false, true);
 
-        addSprite("exit", R.drawable.inv_down, 422, 904, false, true);
+        //addSprite("exit", R.drawable.inv_down, 422, 904, false, true);
+        addControlButtons("exit,menu,hint");
+        showAndHideSprites("", "exit", 0);
 
     }
 
@@ -124,5 +127,7 @@ public class AScene02 extends AScene {
         {
             showAndHideSprites("", "under_tree_1,under_tree_2,under_tree_3,exit,mushroom", 0);
         }
+
+        super.onSpriteTouch(poSprite, pX, pY);
     }
 }

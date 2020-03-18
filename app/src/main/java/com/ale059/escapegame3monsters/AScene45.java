@@ -10,8 +10,9 @@ public class AScene45 extends AScene {
 
         addSprite("door", 0, 349, 404, 304, 351, true, true);
 
-        //addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
-        addSprite("prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+        ////addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
+        //addSprite("prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+        addControlButtons("prev_scene,menu,hint");
 
     }
 
@@ -34,6 +35,8 @@ public class AScene45 extends AScene {
             app.egShowPuzzle( oPuzzle );
 
         }
+
+        super.onSpriteTouch(poSprite, pX, pY);
     }
 
 

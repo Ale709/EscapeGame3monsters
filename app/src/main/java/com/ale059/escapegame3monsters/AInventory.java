@@ -14,8 +14,8 @@ public class AInventory extends AScene {
     protected final ArrayList<AItem> ListItems_Hold = new ArrayList<AItem>();
     public int Offset = 0;
     protected int SelectedIndex = -1;
-    protected ASprite[] InvCellsFrame = new ASprite[5];
-    protected ASprite[] InvCellsItem = new ASprite[5];
+    protected ASprite[] InvCellsFrame = new ASprite[6];
+    protected ASprite[] InvCellsItem = new ASprite[6];
 
     protected HashMap<String, AItem> ListItems_All = new HashMap<String, AItem>();
 
@@ -66,21 +66,26 @@ public class AInventory extends AScene {
         if (mSprites2Draw.size() == 0)
         {
             // initial generate
+            //int nWidth = ViewMain.SIZE_INV-4;//oSprite.getBitmap().getWidth();
+            int nPadding = 2;
+            int nWidth = (ViewMain.SIZE_IN_MEMORY) / (InvCellsFrame.length+1) - nPadding;
+            int nHeight = nWidth;
+            int nLRwidth = (ViewMain.SIZE_IN_MEMORY - InvCellsFrame.length*(nWidth+nPadding))/2 - nPadding;
             int x = 0;
-            oSprite = addSprite("inv_left", R.drawable.inv_left,x,0,true,true);
-            x += oSprite.getBitmap().getWidth()+1;
+            int y = (ViewMain.SIZE_INV - nHeight)/2;
+            oSprite = addSprite("inv_left", R.drawable.inv_left,x,y, nLRwidth, nHeight,true,true);
+            //x += oSprite.getBitmap().getWidth()+1;
+            x += nLRwidth+nPadding;
             for (int i=0; i<InvCellsFrame.length; i++)
             {
-                InvCellsFrame[i] = oSprite = addSprite(null, R.drawable.inv_frame,x,0,true,true);
-                int nWidth = oSprite.getBitmap().getWidth();
-                InvCellsItem[i] = oSprite = addSprite(null, 0,x,0,true,false);
-                oSprite.Width = oSprite.Height = nWidth;
-
-                x += nWidth+1;
+                InvCellsFrame[i] = oSprite = addSprite(null, R.drawable.inv_frame,x,y, nWidth, nHeight, true,true);
+                InvCellsItem[i] = oSprite = addSprite(null, 0,x,y, nWidth, nHeight,true,false);
+                //oSprite.Width = oSprite.Height = nWidth;
+                x += nWidth+nPadding;
             }
 
-            oSprite = addSprite("inv_right", R.drawable.inv_right,x,0,true,true);
-            x += oSprite.getBitmap().getWidth()+1;
+            oSprite = addSprite("inv_right", R.drawable.inv_right,x,y, nLRwidth, nHeight, true,true);
+            x += nLRwidth+1;
         }
 
         for (int i=0; i<InvCellsFrame.length; i++)

@@ -170,6 +170,41 @@ public class AScene {
 
     public void onSpriteTouch(ASprite poSprite, int pX, int pY)
     {
+        if (poSprite == null)
+            return;
+        String sID = poSprite.ID;
+        if (sID.equals("menu")) {
+            //app.SceneMenu = app.ListScenes.get( app.SCENE_MENU_MAIN );
+            app.egOpenMenuScene( app.SCENE_MENU_MAIN );
+            //app.egPlaySound( R.raw.snd_bones );
+        }
+        else if (sID.equals("hint")) {
+            //app.SceneMenu = app.ListScenes.get( app.SCENE_MENU_MAIN );
+            //app.egPlaySound( R.raw.snd_cat );
+            app.egOpenMenuScene( app.SCENE_MENU_MAIN );
+        }
+
+    }
+
+    public void addControlButtons(String psButtons)
+    {
+        String aButtons[] = psButtons.split(",");
+
+        for (String sButtonId: aButtons) {
+            if (sButtonId.equals("next_scene"))
+                addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
+            else if (sButtonId.equals("prev_scene"))
+                addSprite( "prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+            else if (sButtonId.equals("menu"))
+                addSprite( "menu", R.drawable.icon_menu,   10, 176-160, true, true);
+            else if (sButtonId.equals("hint"))
+                addSprite( "hint", R.drawable.icon_hint,   154, 176-160, true, true);
+            else if (sButtonId.equals("exit"))
+                addSprite("exit", R.drawable.inv_down, 422, 904, true, true);
+                //addSprite( "close_scene", R.drawable.arrow_left,   10, 890, true, true);
+
+        }
+
     }
 
 }

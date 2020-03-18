@@ -25,11 +25,15 @@ public class AScene03 extends AScene {
         addSprite("delay_hat",0, 0, 0, false, false);
         addSprite("delay_fishing",0, 0, 0, false, false);
 
-        addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
-        //addSprite("prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+        //addSprite("next_scene", R.drawable.arrow_right, 890, 890, true, true);
+        ////addSprite("prev_scene", R.drawable.arrow_left,   10, 890, true, true);
+        addControlButtons("next_scene");
 
         addSprite("hat_bg",R.drawable.s3hat_bg, 0, 0, false, true);
-        addSprite("exit", R.drawable.inv_down, 422, 904, false, true);
+        //addSprite("exit", R.drawable.inv_down, 422, 904, false, true);
+        addControlButtons("exit,menu,hint");
+        showAndHideSprites("", "exit", 0);
+
     }
 
     @Override
@@ -101,6 +105,8 @@ public class AScene03 extends AScene {
                     app.egPlaySound( R.raw.snd_chest_open );
             app.egShowPuzzle(oPuzzle);
         }
+
+        super.onSpriteTouch(poSprite, pX, pY);
     }
 
     @Override
