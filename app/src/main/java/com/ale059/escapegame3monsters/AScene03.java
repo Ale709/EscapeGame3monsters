@@ -37,7 +37,7 @@ public class AScene03 extends AScene {
     }
 
     @Override
-    public void DrawOnCanvas(Canvas cvs, Paint paint, int pnOffsetX, int pnOffsetY) {
+    public void onShow() {
 
         if (app.egGetProgressEventValue("s1_bone_give")==1)
             if (app.egGetProgressEventValue("s3_skeleton_appear")==0) {
@@ -45,8 +45,7 @@ public class AScene03 extends AScene {
                 app.egSetProgressEventValue("s3_skeleton_appear", 1);
             }
 
-
-        super.DrawOnCanvas(cvs, paint, pnOffsetX, pnOffsetY);
+        super.onShow();
     }
 
     @Override

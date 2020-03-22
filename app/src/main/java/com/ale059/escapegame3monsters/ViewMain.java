@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -28,137 +27,71 @@ public class ViewMain extends View {
     }
 
 
+    private Paint mPaint = new Paint();
+    private Bitmap mBmpInMemory = null;
+    private Canvas mCvsBmpInMemory = null;
+
     @Override
     protected void onDraw(Canvas canvas) {
         //super.onDraw(canvas);
 
+        if (mBmpInMemory == null)
         {
-            Rect rcSrc = new Rect(0,0, this.getWidth(), this.getHeight());
-            Paint paint = new Paint();
-            paint.setColor(Color.BLACK);
-            canvas.drawRect(rcSrc, paint);
+            // create in-memory bitmap
+            mBmpInMemory = Bitmap.createBitmap(SIZE_IN_MEMORY, SIZE_IN_MEMORY+SIZE_INV, Bitmap.Config.RGB_565);
+            mBmpInMemory.setDensity(Bitmap.DENSITY_NONE);
+
+            mCvsBmpInMemory = new Canvas(mBmpInMemory);
+
+            mPaint.setFilterBitmap(true);
+            mPaint.setAntiAlias(true);
+            mPaint.setColor(Color.BLACK);
+
         }
+            int nScrWidth = this.getWidth(), nScrHeight = this.getHeight();
+            float nRectScale = Math.min( ((float)nScrWidth)/ mBmpInMemory.getWidth(), ((float)nScrHeight)/ mBmpInMemory.getHeight() );
 
-//        // create in-memory bitmap
-//        Bitmap bInMemory = Bitmap.createBitmap(SIZE_IN_MEMORY, SIZE_IN_MEMORY, Bitmap.Config.RGB_565);
-//        bInMemory.setDensity(Bitmap.DENSITY_NONE);
-//        Canvas cvs = new Canvas(bInMemory);
-//        Paint paint = new Paint();
-//        paint.setFilterBitmap(true);
-//        paint.setAntiAlias(true);
-//
-//        // load the original image
-//        app.ActiveScene.DrawOnCanvas(cvs, paint);
-//
-//        if (app.ScenePuzzle != null)
-//            app.ScenePuzzle.DrawOnCanvas(cvs, paint);
-//
-//        if (app.SceneItemView.Visible)
-//            app.SceneItemView.DrawOnCanvas(cvs, paint);
-//
-//        //90,560
-//
-//        // scale it down and draw it
-//        Rect rcSrc = new Rect(0,0, bInMemory.getWidth(), bInMemory.getHeight());
-//        //DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-//        //int nScrWidth = dm.widthPixels, nScrHeight = dm.heightPixels;
-//        int nScrWidth = this.getWidth(), nScrHeight = this.getHeight();
-//        int nRectSize = Math.min( nScrWidth, nScrHeight );
-//
-//        int nInvBlockHeight = SIZE_INV*nRectSize/SIZE_IN_MEMORY;
-//
-//        mRectMain.left = mRectMain.top = 0;
-//        mRectMain.right = mRectMain.bottom = nRectSize;
-//        mRectMain.offsetTo((nScrWidth-nRectSize)/2, (nScrHeight-nRectSize+nInvBlockHeight)/2 );
-//
-//        //Bitmap scaledLogo = Bitmap.createScaledBitmap(logoBitmap, logoWidth, logoHeight, false);
-//        canvas.drawBitmap(bInMemory, rcSrc, mRectMain, paint);
-//
-//
-//        // inventory
-//        bInMemory = Bitmap.createBitmap(SIZE_IN_MEMORY, SIZE_INV, Bitmap.Config.RGB_565);
-//        bInMemory.setDensity(Bitmap.DENSITY_NONE);
-//        cvs = new Canvas(bInMemory);
-//
-//        app.Inventory.DrawOnCanvas(cvs, paint);
-//        //90,560
-//
-//        // scale it down and draw it
-//        rcSrc = new Rect(0,0, bInMemory.getWidth(), bInMemory.getHeight());
-//
-//        mRectInventory.left = mRectInventory.top = 0;
-//        mRectInventory.right = nRectSize;
-//        mRectInventory.bottom = nInvBlockHeight;
-//        mRectInventory.offsetTo((nScrWidth-nRectSize)/2, (nScrHeight-nRectSize-nInvBlockHeight)/2 );
-//
-//        canvas.drawBitmap(bInMemory, rcSrc, mRectInventory, paint);
+            //int nInvBlockHeight = SIZE_INV*nRectSize/SIZE_IN_MEMORY;
+            int nInvBlockHeight = (int)(((float)SIZE_INV)*nRectScale);
 
-        // create in-memory bitmap
-        Bitmap bInMemory = Bitmap.createBitmap(SIZE_IN_MEMORY, SIZE_IN_MEMORY+SIZE_INV, Bitmap.Config.RGB_565);
-        bInMemory.setDensity(Bitmap.DENSITY_NONE);
-        Canvas cvs = new Canvas(bInMemory);
-        Paint paint = new Paint();
-        paint.setFilterBitmap(true);
-        paint.setAntiAlias(true);
+
+            mRectMain.left = mRectMain.top = 0;
+            mRectMain.right = (int)(((float) mBmpInMemory.getWidth())*nRectScale);
+            mRectMain.bottom = (int)(((float) mBmpInMemory.getHeight())*nRectScale);
+            mRectMain.offsetTo((nScrWidth-mRectMain.right)/2, (nScrHeight-mRectMain.bottom)/2 );
+
+            mRectInventory.set( mRectMain );
+            mRectInventory.bottom = mRectInventory.top+nInvBlockHeight;
+
+
+        Rect rcSrc = new Rect(0,0, this.getWidth(), this.getHeight());
+        canvas.drawRect(rcSrc, mPaint);
+
+        rcSrc.right = mBmpInMemory.getWidth();
+        rcSrc.bottom = mBmpInMemory.getHeight();
+        mCvsBmpInMemory.drawRect(rcSrc, mPaint);
 
         // load the original image
-        app.ActiveScene.DrawOnCanvas(cvs, paint, 0, SIZE_INV);
+        app.ActiveScene.DrawOnCanvas(mCvsBmpInMemory, mPaint, 0, SIZE_INV);
 
         if (app.ScenePuzzle != null)
-            app.ScenePuzzle.DrawOnCanvas(cvs, paint, 0, SIZE_INV);
+            app.ScenePuzzle.DrawOnCanvas(mCvsBmpInMemory, mPaint, 0, SIZE_INV);
 
         if (app.SceneItemView.Visible)
-            app.SceneItemView.DrawOnCanvas(cvs, paint, 0, SIZE_INV);
+            app.SceneItemView.DrawOnCanvas(mCvsBmpInMemory, mPaint, 0, SIZE_INV);
 
-        app.Inventory.DrawOnCanvas(cvs, paint, 0, 0);
+        app.Inventory.DrawOnCanvas(mCvsBmpInMemory, mPaint, 0, 0);
 
         if (app.SceneMenu != null)
-            app.SceneMenu.DrawOnCanvas(cvs, paint, 0, 0);
+            app.SceneMenu.DrawOnCanvas(mCvsBmpInMemory, mPaint, 0, 0);
         //90,560
 
         // scale it down and draw it
-        Rect rcSrc = new Rect(0,0, bInMemory.getWidth(), bInMemory.getHeight());
-        int nScrWidth = this.getWidth(), nScrHeight = this.getHeight();
-        //int nRectSize = Math.min( nScrWidth, nScrHeight );
-        float nRectScale = Math.min( ((float)nScrWidth)/bInMemory.getWidth(), ((float)nScrHeight)/bInMemory.getHeight() );
-
-        //int nInvBlockHeight = SIZE_INV*nRectSize/SIZE_IN_MEMORY;
-        int nInvBlockHeight = (int)(((float)SIZE_INV)*nRectScale);
+        //Rect rcSrc = new Rect(0,0, mBmpInMemory.getWidth(), mBmpInMemory.getHeight());
+        canvas.drawBitmap(mBmpInMemory, rcSrc, mRectMain, mPaint);
 
 
-        mRectMain.left = mRectMain.top = 0;
-        //mRectMain.right = mRectMain.bottom = nRectSize;
-        //mRectMain.offsetTo((nScrWidth-nRectSize)/2, (nScrHeight-nRectSize+nInvBlockHeight)/2 );
-        mRectMain.right = (int)(((float)bInMemory.getWidth())*nRectScale);
-        mRectMain.bottom = (int)(((float)bInMemory.getHeight())*nRectScale);
-        mRectMain.offsetTo((nScrWidth-mRectMain.right)/2, (nScrHeight-mRectMain.bottom)/2 );
 
-        //Bitmap scaledLogo = Bitmap.createScaledBitmap(logoBitmap, logoWidth, logoHeight, false);
-        canvas.drawBitmap(bInMemory, rcSrc, mRectMain, paint);
-
-
-        // inventory
-//        bInMemory = Bitmap.createBitmap(SIZE_IN_MEMORY, SIZE_INV, Bitmap.Config.RGB_565);
-//        bInMemory.setDensity(Bitmap.DENSITY_NONE);
-//        cvs = new Canvas(bInMemory);
-//
-//        app.Inventory.DrawOnCanvas(cvs, paint);
-//        //90,560
-//
-//        // scale it down and draw it
-//        rcSrc = new Rect(0,0, bInMemory.getWidth(), bInMemory.getHeight());
-
-        mRectInventory.set( mRectMain );
-        //mRectInventory.offset(0, -nInvBlockHeight);
-        mRectInventory.bottom = mRectInventory.top+nInvBlockHeight;
-
-
-//        mRectInventory.left = mRectInventory.top = 0;
-//        mRectInventory.right = (int)(((float)bInMemory.getWidth())*nRectScale);
-//        mRectInventory.bottom = nInvBlockHeight;
-//        mRectInventory.offsetTo((nScrWidth-nRectSize)/2, (nScrHeight-nRectSize-nInvBlockHeight)/2 );
-
-        //canvas.drawBitmap(bInMemory, rcSrc, mRectInventory, paint);
 
         invalidate();
     }

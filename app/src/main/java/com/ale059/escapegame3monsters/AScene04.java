@@ -135,13 +135,15 @@ public class AScene04 extends AScene {
         }
         else if (sID.equals("door_3t")) {
             app.egPlaySound( R.raw.snd_success );
+            app.egOpenMenuScene( app.SCENE_MENU_THEEND );
+
         }
 
         super.onSpriteTouch(poSprite, pX, pY);
     }
 
     @Override
-    public void DrawOnCanvas(Canvas cvs, Paint paint, int pnOffsetX, int pnOffsetY) {
+    public void onShow() {
 
         if (app.egGetProgressEventValue("s1_ring_give")==1) {
             if (app.egGetProgressEventValue("s4_princess_appear") == 0) {
@@ -150,8 +152,7 @@ public class AScene04 extends AScene {
             }
         }
 
-
-        super.DrawOnCanvas(cvs, paint, pnOffsetX, pnOffsetY);
+        super.onShow();
     }
 
     @Override
@@ -249,6 +250,7 @@ public class AScene04 extends AScene {
             SymbolsSets[0] = SymbolsSets[1] = SymbolsSets[2] = SymbolsSets[3] = SymbolsSets[4] = APuzzle_Code.SYMBOLS_SET_ABC;
             //SymbolsSets[4] = APuzzle.SYMBOLS_SET_123;
 
+            SAVEID = "PuzzleDoor2";
         }
 
         @Override

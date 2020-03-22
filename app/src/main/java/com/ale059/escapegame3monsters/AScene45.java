@@ -59,6 +59,8 @@ public class AScene45 extends AScene {
 
             SymbolsSets = new String[ 5 ];
             SymbolsSets[0] = SymbolsSets[1] = SymbolsSets[2] = SymbolsSets[3] = SymbolsSets[4] = "12345";
+
+            SAVEID = "PuzzleDoor45";
         }
 
         @Override

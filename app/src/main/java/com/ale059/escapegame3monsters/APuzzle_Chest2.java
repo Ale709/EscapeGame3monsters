@@ -13,6 +13,7 @@ public class APuzzle_Chest2 extends APuzzle_Code {
         SymbolsSets[0] = SymbolsSets[1] = SymbolsSets[2] = SymbolsSets[3] = SymbolsSets[4] = "rygpb";
         //SymbolsSets[4] = APuzzle.SYMBOLS_SET_123;
 
+        SAVEID = "PuzzleChest2";
     }
 
     @Override
@@ -53,4 +54,37 @@ public class APuzzle_Chest2 extends APuzzle_Code {
         }
     }
 
+    @Override
+    public void RestoreFromSaved()
+    {
+        Solved = (1==app.egReadSingleSettingInt( SAVEID+"_Solved", (Solved?1:0) ));
+        AnswerCode = app.egReadSingleSettingString( SAVEID+"_AnswerCode", AnswerCode );
+        CurrentCode = app.egReadSingleSettingString( SAVEID+"_CurrentCode", CurrentCode );
+        if (Solved)
+        {
+            AScene_ChestContent mLocalScene = (AScene_ChestContent)this.getScene();
+            mLocalScene.Item1 = app.Inventory.getItemByID( app.egReadSingleSettingString( SAVEID+"_Item1", "ring" )  );
+            mLocalScene.Item2 = app.Inventory.getItemByID( app.egReadSingleSettingString( SAVEID+"_Item2", "" )  );
+            mLocalScene.Item3 = app.Inventory.getItemByID( app.egReadSingleSettingString( SAVEID+"_Item3", "" )  );
+        }
+    }
+
+    @Override
+    public void SaveToSaved()
+    {
+        app.egWriteSingleSetting( SAVEID+"_Solved", (this.Solved?1:0) );
+        app.egWriteSingleSetting( SAVEID+"_AnswerCode", AnswerCode );
+        app.egWriteSingleSetting( SAVEID+"_CurrentCode", CurrentCode );
+        if (Solved) {
+            AScene_ChestContent mLocalScene = (AScene_ChestContent)this.getScene();
+
+            AItem oItem;
+            oItem = mLocalScene.Item1;
+            app.egWriteSingleSetting( SAVEID+"_Item1", (oItem==null?"":oItem.ID) );
+            oItem = mLocalScene.Item2;
+            app.egWriteSingleSetting( SAVEID+"_Item2", (oItem==null?"":oItem.ID) );
+            oItem = mLocalScene.Item3;
+            app.egWriteSingleSetting( SAVEID+"_Item3", (oItem==null?"":oItem.ID) );
+        }
+    }
 }

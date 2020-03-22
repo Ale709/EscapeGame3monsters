@@ -7,6 +7,9 @@ public class APuzzle {
     protected String InitialCode = "";
     protected String CurrentCode = "";
 
+    protected String SAVEID = "Puzzle";
+
+
     public boolean Solved = false;
 
 
@@ -43,5 +46,21 @@ public class APuzzle {
     {
         app.egPlaySound( R.raw.snd_code_wrong );
     }
+
+
+    public void RestoreFromSaved()
+    {
+        Solved = (1==app.egReadSingleSettingInt( SAVEID+"_Solved", (Solved?1:0) ));
+        AnswerCode = app.egReadSingleSettingString( SAVEID+"_AnswerCode", AnswerCode );
+        CurrentCode = app.egReadSingleSettingString( SAVEID+"_CurrentCode", CurrentCode );
+    }
+
+    public void SaveToSaved()
+    {
+        app.egWriteSingleSetting( SAVEID+"_Solved", (this.Solved?1:0) );
+        app.egWriteSingleSetting( SAVEID+"_AnswerCode", AnswerCode );
+        app.egWriteSingleSetting( SAVEID+"_CurrentCode", CurrentCode );
+    }
+
 }
 

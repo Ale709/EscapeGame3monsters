@@ -1,13 +1,17 @@
 package com.ale059.escapegame3monsters;
 
 import android.app.Application;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Build;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class app extends Application {
@@ -21,11 +25,29 @@ public class app extends Application {
         return uidcount;
     }
 
+    private static Context mBaseContext = null;
+
     public app getInstance(){
         return singleton;
     }
 
-    private static Context mBaseContext = null;
+    public static final Context getContext()
+    {
+        return mBaseContext;
+    }
+
+    public static final String getRString( int pnResId )
+    {
+        return mBaseContext.getString( pnResId );
+    }
+
+    public static final Resources Resources()
+    {
+        return mBaseContext.getResources();
+    }
+
+
+
     public static final String FILENAME_SETTINGS = "ASettings.cfg";
     private static SharedPreferences mSettings = null;
 
@@ -61,25 +83,30 @@ public class app extends Application {
         app.egPrepareSound( R.raw.snd_web_wipe );
         //app.egPlaySound( R.raw.snd_item_take );
 
-        egCreateItemsAndInventory();
+        //egCreateItemsAndInventory();
+        //Inventory.fromString( app.egReadSingleSettingString("Inventory", "") );
+
+        egCreateProgressEvents();
+        //egRestoreProgressEventsFromSaved( );
+
         egCreateScenes();
+        //egRestorePuzzlesFromSaved( );
+
+
 
         super.onCreate();
     }
 
-    public static final Context getContext()
+    public static void egResetGame()
     {
-        return mBaseContext;
-    }
+        egCreateScenes();
 
-    public static final String getRString( int pnResId )
-    {
-        return mBaseContext.getString( pnResId );
-    }
+        egResetProgressEvents();
 
-    public static final Resources Resources()
-    {
-        return mBaseContext.getResources();
+        Inventory.Reset();
+
+        app.egWriteSingleSetting("Inventory", Inventory.toString() );
+
     }
 
 
@@ -97,6 +124,7 @@ public class app extends Application {
     public static int SCENE05 = uid();
     //public static int SCENE_ITEMVIEW = uid();
     public static int SCENE_MENU_MAIN = uid();
+    public static int SCENE_MENU_ASK_NEW = uid();
     public static int SCENE_MENU_THEEND = uid();
     public static int SCENE_MENU_ABOUT = uid();
     public static int SCENE_MENU_HINT = uid();
@@ -119,8 +147,6 @@ public class app extends Application {
 
     protected static AScene SceneMenu = null;
 
-    protected static HashMap<String, Integer> ListEventValues = new HashMap<String, Integer>();
-
     //public static int EG_CODE_TREES = 13232;
 
 
@@ -132,6 +158,8 @@ public class app extends Application {
     public static void egCreateScenes()
     {
         AScene oScene;
+
+        ListScenes.clear();
 
         oScene = new AScene01();
         ListScenes.put(SCENE01, oScene);
@@ -168,27 +196,38 @@ public class app extends Application {
 
         //ListScenes.put(SCENE_ITEMVIEW, oScene);
 
-        ActiveScene = ListScenes.get( SCENE01 );
+        ActiveScene = null;
+        egMoveToScene( SCENE01 );
 
-        oScene = new ASceneMenuMain();
-        ListScenes.put(SCENE_MENU_MAIN, oScene);
+        ListScenes.put(SCENE_MENU_MAIN, new ASceneMenuMain());
+        ListScenes.put(SCENE_MENU_ASK_NEW, new ASceneMenuAskNew());
+        ListScenes.put(SCENE_MENU_THEEND, new ASceneMenuTheEnd());
 
-        SceneMenu = ListScenes.get( SCENE_MENU_MAIN );
+        SceneMenu = null;
+        egOpenMenuScene( SCENE_MENU_MAIN );
     }
-
 
     public static void egMoveToScene( int pnSceneNum )
     {
         AScene oScene = ListScenes.get( pnSceneNum );
         if (oScene != null)
-            ActiveScene = oScene;
+            if (ActiveScene != oScene)
+            {
+                ActiveScene = oScene;
+                ActiveScene.onShow();
+            }
     }
 
     public static void egOpenMenuScene( int pnSceneNum )
     {
+        if (pnSceneNum == 0)
+            SceneMenu = null;
         AScene oScene = ListScenes.get( pnSceneNum );
         if (oScene != null)
-            SceneMenu = oScene;
+            if (SceneMenu != oScene) {
+                SceneMenu = oScene;
+                SceneMenu.onShow();
+            }
     }
 
     public static void egAddToInventory( String psItemID )
@@ -216,6 +255,8 @@ public class app extends Application {
     public static void egRemoveFromInventory( String psItemID )
     {
         Inventory.ItemsHold_Remove(psItemID);
+
+        app.egWriteSingleSetting("Inventory", Inventory.toString() );
     }
 
     public static void egShowItem( AItem poItem )
@@ -259,56 +300,98 @@ public class app extends Application {
         return ListPuzzles.get( pnPuzzleID );
     }
 
+    protected static ArrayList<AProgressEvent> mProgressEventsOrder = new ArrayList<AProgressEvent>();
+    protected static HashMap<String, AProgressEvent> ListProgressEvents = new HashMap<String, AProgressEvent>();
+    //protected static HashMap<String, Integer> ListEventValues = new HashMap<String, Integer>();
 
-    public static void egResetProgress()
+
+    private static AProgressEvent egDefineProgressEvent(String psID, int pnInitValue)
     {
-        //app.egSetProgressEventValue("s45_open_door", 0);
-        //app.egSetProgressEventValue("s5_cheese_take", 0);
-        //app.egSetProgressEventValue("s4_apple_take", 0);
-        //app.egSetProgressEventValue("s4_mouse_owl", 0);
-        //app.egSetProgressEventValue("s4_scroll_take", 0);
-        //app.egSetProgressEventValue("s5_scroll_give", 0);
-        //app.egSetProgressEventValue("s5_dagger_take", 0);
-        //app.egSetProgressEventValue("s5_banner_take", 0);
-        //app.egSetProgressEventValue("s5_banner_look", 0);
-        //app.egSetProgressEventValue("s2_chest1_open", 0);
-        //app.egSetProgressEventValue("s2_shovel_take", 0);
-        //app.egSetProgressEventValue("s2_shovel_dig", 0);
-//        app.egSetProgressEventValue("s2_bone_take", 0);
-//        app.egSetProgressEventValue("s2_worm_take", 0);
-        //app.egSetProgressEventValue("s2_mushroom_take", 0);
-        //app.egSetProgressEventValue("s5_ingridients", 0);
-        //app.egSetProgressEventValue("s5_potion_appear", 0);
-        //app.egSetProgressEventValue("s5_potion_take", 0);
-        //app.egSetProgressEventValue("s1_potion_give", 0);
-        //app.egSetProgressEventValue("s1_bone_solve", 0);
-        //app.egSetProgressEventValue("s1_bone_give", 0);
-        //app.egSetProgressEventValue("s3_skeleton_appear", 0);
-        //app.egSetProgressEventValue("s2_branch_take", 0);
-        //app.egSetProgressEventValue("s2_branch_cut", 0);
-        //app.egSetProgressEventValue("s2_rope_take", 0);
-        //app.egSetProgressEventValue("s3_frod_make", 0);
-        //app.egSetProgressEventValue("s2_worm2_take", 0);
-        //app.egSetProgressEventValue("s3_frodworm_make", 0);
-        //app.egSetProgressEventValue("s3_skeleton_fish", 0);
-        //app.egSetProgressEventValue("s1_fish_solve", 0);
-        //app.egSetProgressEventValue("s1_fish_give", 0);
-        //app.egSetProgressEventValue("s5_cat_appear", 0);
-        //app.egSetProgressEventValue("s3_flag_make", 0);
-        //app.egSetProgressEventValue("s3_flag_put", 0);
-        //app.egSetProgressEventValue("s3_chest2_hint", 0);
-        app.egSetProgressEventValue("s3_chest2_open", 0);
-        //app.egSetProgressEventValue("s3_ring_take", 0);
-        //app.egSetProgressEventValue("s3_ring_solve", 0);
-        //app.egSetProgressEventValue("s3_ring_give", 0);
-        //app.egSetProgressEventValue("s4_princess_appear", 0);
-        //app.egSetProgressEventValue("s4_bookcase_moved", 0);
-        //app.egSetProgressEventValue("s5_broom_take", 0);
-        app.egSetProgressEventValue("s4_broom_use", 0);
-        app.egSetProgressEventValue("s4_door_hint", 0);
-        app.egSetProgressEventValue("s4_door_open", 0);
+        AProgressEvent oEvent = new AProgressEvent(psID, pnInitValue);
+        mProgressEventsOrder.add( oEvent );
+        ListProgressEvents.put( psID, oEvent );
 
+        return oEvent;
+    }
 
+    public static void egCreateProgressEvents() {
+
+        mProgressEventsOrder.clear();
+
+        egDefineProgressEvent("have_game_progress", 0);
+        egDefineProgressEvent("s45_open_door", 0);
+        egDefineProgressEvent("s5_cheese_take", 0);
+        egDefineProgressEvent("s4_apple_take", 0);
+        egDefineProgressEvent("s4_mouse_owl", 0);
+        egDefineProgressEvent("s4_scroll_take", 0);
+        egDefineProgressEvent("s5_scroll_give", 0);
+        egDefineProgressEvent("s5_dagger_take", 0);
+        egDefineProgressEvent("s5_banner_take", 0);
+        egDefineProgressEvent("s5_banner_look", 0);
+        egDefineProgressEvent("s2_chest1_open", 0);
+        egDefineProgressEvent("s2_shovel_take", 0);
+        egDefineProgressEvent("s2_shovel_dig", 0);
+        egDefineProgressEvent("s2_bone_take", 0);
+        egDefineProgressEvent("s2_worm_take", 0);
+        egDefineProgressEvent("s2_mushroom_take", 0);
+        egDefineProgressEvent("s5_ingridients", 0);
+        egDefineProgressEvent("s5_potion_appear", 0);
+        egDefineProgressEvent("s5_potion_take", 0);
+        egDefineProgressEvent("s1_potion_give", 0);
+        egDefineProgressEvent("s1_bone_solve", 0);
+        egDefineProgressEvent("s1_bone_give", 0);
+        egDefineProgressEvent("s3_skeleton_appear", 0);
+        egDefineProgressEvent("s2_branch_take", 0);
+        egDefineProgressEvent("s2_branch_cut", 0);
+        egDefineProgressEvent("s2_rope_take", 0);
+        egDefineProgressEvent("s3_frod_make", 0);
+        egDefineProgressEvent("s2_worm2_take", 0);
+        egDefineProgressEvent("s3_frodworm_make", 0);
+        egDefineProgressEvent("s3_skeleton_fish", 0);
+        egDefineProgressEvent("s1_fish_solve", 0);
+        egDefineProgressEvent("s1_fish_give", 0);
+        egDefineProgressEvent("s5_cat_appear", 0);
+        egDefineProgressEvent("s3_flag_make", 0);
+        egDefineProgressEvent("s3_flag_put", 0);
+        egDefineProgressEvent("s3_chest2_hint", 0);
+        egDefineProgressEvent("s3_chest2_open", 0);
+        egDefineProgressEvent("s3_ring_take", 0);
+        egDefineProgressEvent("s3_ring_solve", 0);
+        egDefineProgressEvent("s3_ring_give", 0);
+        egDefineProgressEvent("s4_princess_appear", 0);
+        egDefineProgressEvent("s4_bookcase_moved", 0);
+        egDefineProgressEvent("s5_broom_take", 0);
+        egDefineProgressEvent("s4_broom_use", 0);
+        egDefineProgressEvent("s4_door_hint", 0);
+        egDefineProgressEvent("s4_door_open", 0);
+    }
+
+    public static void egResetProgressEvents()
+    {
+
+        for(AProgressEvent oEvent: mProgressEventsOrder)
+        {
+            if (oEvent != null)
+                egSetProgressEventValue( oEvent, oEvent.InitialValue );
+        }
+    }
+
+    public static void egRestoreProgressEventsFromSaved( )
+    {
+//        for(AProgressEvent oEvent: mProgressEventsOrder)
+//        {
+//            if (oEvent != null)
+//                oEvent.Value = egReadSingleSettingInt("Event_"+oEvent.ID, oEvent.InitialValue);
+//        }
+    }
+
+    public static void egRestorePuzzlesFromSaved( )
+    {
+//        for(APuzzle oPuzzle: ListPuzzles.values())
+//        {
+//            if (oPuzzle != null)
+//                oPuzzle.RestoreFromSaved();
+//        }
 
     }
 
@@ -360,18 +443,24 @@ public class app extends Application {
 
     public static int egGetProgressEventValue( String psEventID )
     {
-        Integer nRet = ListEventValues.get( psEventID );
-        if (nRet == null)
+        AProgressEvent oEvent = ListProgressEvents.get( psEventID );
+        if (oEvent == null)
             return 0;
-        return nRet.intValue();
+        return oEvent.Value;
     }
 
-    public static void egSetProgressEventValue( String psEventID, int pnValue )
-    {
-        Integer nValue = new Integer(pnValue);
-        ListEventValues.put( psEventID, nValue );
+    public static void egSetProgressEventValue( String psEventID, int pnValue ) {
+        AProgressEvent oEvent = ListProgressEvents.get(psEventID);
+        egSetProgressEventValue( oEvent, pnValue );
+    }
 
-        egWriteSingleSetting("Event_"+psEventID, nValue);
+    public static void egSetProgressEventValue( AProgressEvent poEvent, int pnValue )
+    {
+        if (poEvent == null)
+            return;
+        poEvent.Value = pnValue;
+
+        //TODO: egWriteSingleSetting("Event_"+poEvent.ID, poEvent.Value);
     }
 
     public static void egWriteSingleSetting(String psSettingID, int pnValue)
@@ -380,7 +469,6 @@ public class app extends Application {
         editor.putInt(psSettingID, pnValue);
         editor.apply();
     }
-
     public static int egReadSingleSettingInt(String psSettingID, int pnDefaultValue)
     {
         if (mSettings.contains( psSettingID ))
@@ -388,4 +476,55 @@ public class app extends Application {
         return pnDefaultValue;
     }
 
+    public static void egWriteSingleSetting(String psSettingID, String psValue)
+    {
+        SharedPreferences.Editor editor = mSettings.edit();
+        editor.putString(psSettingID, psValue);
+        editor.apply();
+    }
+    public static String egReadSingleSettingString(String psSettingID, String psDefaultValue)
+    {
+        String sRet = null;
+        if (mSettings.contains( psSettingID ))
+            sRet = mSettings.getString( psSettingID, psDefaultValue);
+        if (sRet == null)
+            sRet = psDefaultValue;
+        return sRet;
+    }
+
+    public static void egRateApp()
+    {
+        try
+        {
+            Intent rateIntent = rateIntentForUrl("market://details");
+            mBaseContext.startActivity(rateIntent);
+        }
+        catch (ActivityNotFoundException e)
+        {
+            Intent rateIntent = rateIntentForUrl("https://play.google.com/store/apps/details");
+            mBaseContext.startActivity(rateIntent);
+        }
+        catch (Exception e)
+        {
+            int a = 5;
+
+        }
+    }
+
+    private static Intent rateIntentForUrl(String url)
+    {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s?id=%s", url, mBaseContext.getPackageName())));
+        int flags = Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK;
+        if (Build.VERSION.SDK_INT >= 21)
+        {
+            flags |= Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
+        }
+        else
+        {
+            //noinspection deprecation
+            flags |= Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET;
+        }
+        intent.addFlags(flags);
+        return intent;
+    }
 }

@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -47,6 +48,8 @@ public class ActivityMain extends AppCompatActivity {
 //            public void onInitializationComplete(InitializationStatus initializationStatus) {
 //            }
 //        });
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override

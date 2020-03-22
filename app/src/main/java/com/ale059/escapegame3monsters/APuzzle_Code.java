@@ -90,13 +90,17 @@ public class APuzzle_Code extends APuzzle {
                 Puzzle_Code = poPuzzle;
 
                 ASprite oSprite = null;
-                addSprite("bg", R.drawable.bg_black_shade, 0, 0, 1024, 1024, true, false);
+                addSprite("bg", R.drawable.bg_black_shade, 0, 0, ViewMain.SIZE_IN_MEMORY, ViewMain.SIZE_IN_MEMORY, true, false);
                 addSprite("", poPuzzle.LogoResID, (ViewMain.SIZE_IN_MEMORY - 160)/2, 50, 160, 160, true, false);
 
                 int nLen = poPuzzle.getCodeLength();
-                int x0 = 0, y0 = 0, spx = 40, spy = 40;
+                int x0 = 0, y0 = 0, spx = 30, spy = 30;
+                int nOkBtnWidth = 320;
+                int nOkBtnHeight = 160;
+
                 x0 = (ViewMain.SIZE_IN_MEMORY - (nLen * 160 + (nLen - 1) * spx)) / 2;
-                y0 = (ViewMain.SIZE_IN_MEMORY - (160 + 2 * spy + 2 * 116)) / 2;
+                //y0 = (ViewMain.SIZE_IN_MEMORY - (160 + 2 * spy + 2 * 116 + nOkBtnHeight + 2*spy)) / 2;
+                y0 = 50 + 160 + spy*2;
 
                 int x1 = x0;
                 for (int i = 0; i < nLen; i++) {
@@ -112,10 +116,18 @@ public class APuzzle_Code extends APuzzle {
                     x1 = x1 + 160 + spx;
                 }
 
-                addSprite("btn_check", R.drawable.puz_btn_long, x0, y0 + (160 + 2 * spy + 2 * 116) + spy, (nLen * 160 + (nLen - 1) * spx), 2*spy, true, true);
+                //addSprite("btn_check", R.drawable.puz_btn_long, x0, y0 + (160 + 2 * spy + 2 * 116) + spy, (nLen * 160 + (nLen - 1) * spx), 2*spy, true, true);
+                y0 = y0 + (160 + 2 * spy + 2 * 116) + 2*spy;
+                x0 = (ViewMain.SIZE_IN_MEMORY-nOkBtnWidth*2)/3;
 
+                addSprite("exit", R.drawable.puz_btn_long, x0, y0, nOkBtnWidth, nOkBtnHeight, true, true);
+                addSprite("icon_cancel", R.drawable.icon_cancel, x0+(nOkBtnWidth-(nOkBtnHeight-spy))/2, y0+spy/2, nOkBtnHeight-spy, nOkBtnHeight-spy, true, false);
 
-                addSprite("exit", R.drawable.inv_down, 422, 904, true, true);
+                x0 += x0 + nOkBtnWidth;
+                addSprite("btn_check", R.drawable.puz_btn_long, x0, y0, nOkBtnWidth, nOkBtnHeight, true, true);
+                addSprite("icon_ok", R.drawable.icon_ok, x0+(nOkBtnWidth-(nOkBtnHeight-spy))/2, y0+spy/2, nOkBtnHeight-spy, nOkBtnHeight-spy, true, false);
+
+                //addSprite("exit", R.drawable.inv_down, 422, 904, true, true);
             }
 
             protected int getResourceForChar(char ch) {

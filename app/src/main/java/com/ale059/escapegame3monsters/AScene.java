@@ -79,6 +79,10 @@ public class AScene {
         }
     }
 
+    public void onShow()
+    {
+    }
+
     public void onAnimationShowFinished( ASprite poSprite )
     {
     }

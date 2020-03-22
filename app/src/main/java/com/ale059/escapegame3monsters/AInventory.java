@@ -7,6 +7,7 @@ import android.graphics.Paint;
 
 // test comment 2
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class AInventory extends AScene {
@@ -22,13 +23,28 @@ public class AInventory extends AScene {
 
     public AInventory()
     {
+        Reset();
+    }
+
+    public void Reset()
+    {
+        ListItems_All.clear();
+        ListItems_Hold.clear();
+        Offset = 0;
+        SelectedIndex = -1;
+        //for (int i=0; i<InvCellsFrame.length; i++)
+        //    InvCellsFrame[i] = null;
+        //for (int i=0; i<InvCellsItem.length; i++)
+        //    InvCellsItem[i] = null;
+
+
         AItem oItem = null;
         oItem = CreateItem("cheese_worm", R.drawable.item_cheese_worm)
-            .addHotSpot(0, "worm", 345, 440, 58, 63);
+                .addHotSpot(0, "worm", 345, 440, 58, 63);
         CreateItem("cheese", R.drawable.item_cheese);
         CreateItem("dagger", R.drawable.item_dagger);
         CreateItem("banner", R.drawable.item_banner)
-            .addHotSpot(0, "banner2", 127, 96, 390, 446);
+                .addHotSpot(0, "banner2", 127, 96, 390, 446);
         CreateItem("worm", R.drawable.item_worm);
         //oItem.AllowMultiple = true;
         CreateItem("mushroom", R.drawable.item_mushroom);
@@ -47,6 +63,33 @@ public class AInventory extends AScene {
         CreateItem("ring", R.drawable.item_ring);
         CreateItem("potion", R.drawable.item_potion);
         CreateItem("broom", R.drawable.item_broom);
+
+    }
+
+    public String toString()
+    {
+        StringBuilder sbRet = new StringBuilder();
+        for (AItem oItem: ListItems_Hold)
+        {
+            if (oItem != null)
+                sbRet.append( oItem.ID ).append( ',' );
+        }
+        return sbRet.toString();
+    }
+
+    public void fromString(String psItems)
+    {
+        ListItems_Hold.clear();
+        Offset = 0;
+        SelectedIndex = -1;
+
+        if (psItems == null)
+            return;
+
+        String[] aItemsID = psItems.split(",");
+
+        for (String sID: aItemsID)
+            ItemsHold_Add(sID);
     }
 
     protected AItem CreateItem(String psID, int pnResID)
@@ -115,9 +158,13 @@ public class AInventory extends AScene {
         super.DrawOnCanvas(cvs, paint, pnOffsetX, pnOffsetY);
     }
 
+    private long mPrevTouchTime = 0;
     @Override
     public void onSpriteTouch(ASprite poSprite, int pX, int pY)
     {
+
+        long nCurTouchTime = System.currentTimeMillis();
+
         if (poSprite == null)
             return;
         String sID = poSprite.ID;
@@ -133,10 +180,15 @@ public class AInventory extends AScene {
                 {
                     int nNewPos = Offset + i;
                     if (nNewPos==SelectedIndex) {
-                        app.SceneItemView.ShowItem( ListItems_Hold.get(SelectedIndex) );
+                        if (nCurTouchTime-mPrevTouchTime <= 500)
+                            app.SceneItemView.ShowItem( ListItems_Hold.get(SelectedIndex) );
+                        else
+                            SelectedIndex = -1;
                     }
                     else
                         SelectedIndex = (nNewPos<ListItems_Hold.size() ? nNewPos : -1 );
+
+                    mPrevTouchTime = nCurTouchTime;
                 }
             }
 
@@ -148,19 +200,28 @@ public class AInventory extends AScene {
         if (oItem != null)
             //if (ListItems_Hold.contains(oItem) == false)
                 ListItems_Hold.add(oItem);
+
+        app.egWriteSingleSetting("Inventory", this.toString() );
+
         return oItem;
     }
 
     public AItem ItemsHold_Remove(String psItemID) {
         AItem oItem = getSelectedItem();
         if (oItem != null)
-            if (oItem.ID.equals(psItemID))
-                return ListItems_Hold.remove(this.SelectedIndex);
+            if (oItem.ID.equals(psItemID)) {
+                AItem oRet = ListItems_Hold.remove(this.SelectedIndex);
+                app.egWriteSingleSetting("Inventory", this.toString() );
+                return oRet;
+
+            }
 
         oItem = ListItems_All.get(psItemID);
         if (oItem != null)
-            if (ListItems_Hold.remove(oItem) == false)
+            if (ListItems_Hold.remove(oItem) == false) {
+                app.egWriteSingleSetting("Inventory", this.toString() );
                 return oItem;
+            }
 
         return null;
     }
@@ -177,6 +238,8 @@ public class AInventory extends AScene {
             return null;
         ListItems_Hold.add(nIndex, oItem1);
         ListItems_Hold.remove(nIndex+1);
+
+        app.egWriteSingleSetting("Inventory", this.toString() );
 
         return oItem1;
     }

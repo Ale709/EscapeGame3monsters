@@ -19,12 +19,23 @@ public class ASceneMenuMain extends AScene {
         addSprite("menu_sound_off", R.drawable.icon_off, 284, 966, false, false);
 
         //addSprite("exit", R.drawable.inv_down, 422, 904, true, true);
+    }
+
+    @Override
+    public void onShow()
+    {
         if (0==app.IsMusicOn)
             showAndHideSprites("menu_music_off", "", 0);
         if (0==app.IsSoundOn)
             showAndHideSprites("menu_sound_off", "", 0);
-    }
 
+        if (app.egGetProgressEventValue("have_game_progress")==1)
+            showAndHideSprites("menu_continue", "menu_continue_d", 0);
+        else
+            showAndHideSprites("menu_continue_d", "menu_continue", 0);
+
+        super.onShow();
+    }
 
     @Override
     public void onSpriteTouch(ASprite poSprite, int pX, int pY)
@@ -32,11 +43,23 @@ public class ASceneMenuMain extends AScene {
         if (poSprite == null)
             return;
         String sID = poSprite.ID;
-        if (sID.equals("menu_new"))
-            app.SceneMenu = null;
+        if (sID.equals("menu_new")) {
+            //app.egResetGame();
+            //app.egOpenMenuScene(0);
+            if (app.egGetProgressEventValue("have_game_progress")==1)
+                app.egOpenMenuScene( app.SCENE_MENU_ASK_NEW );
+            else
+            {
+                app.egResetGame();
+                app.egOpenMenuScene(0);
+            }
 
+        }
         else if (sID.equals("menu_continue"))
-            app.SceneMenu = null;
+            app.egOpenMenuScene( 0 );
+            //app.SceneMenu = null;
+        else if (sID.equals("menu_about"))
+            app.egOpenMenuScene( app.SCENE_MENU_THEEND );
 
         else if (sID.equals("menu_music"))
         {

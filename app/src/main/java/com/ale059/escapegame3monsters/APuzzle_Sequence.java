@@ -5,6 +5,7 @@ public class APuzzle_Sequence extends APuzzle {
     public APuzzle_Sequence(String psSequence)
     {
         AnswerCode = psSequence;
+        SAVEID = "PuzzleMushroom";
     }
     public void addSequenceChar(String s)
     {

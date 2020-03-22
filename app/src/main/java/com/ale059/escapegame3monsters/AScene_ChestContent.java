@@ -54,7 +54,7 @@ public class AScene_ChestContent extends AScenePuzzle {
 
             int nWidth = 160;
             int x = (ViewMain.SIZE_IN_MEMORY - 3*(nWidth+1) )/2;
-            int y = 500;
+            int y = 100+200+100+nWidth/2;
             addSprite("", R.drawable.inv_frame, x, y, nWidth, nWidth, true, false);
             Item1Sprite = addSprite("item1", 0, x, y, nWidth, nWidth, true, true);
             x += nWidth + 1;
@@ -65,7 +65,13 @@ public class AScene_ChestContent extends AScenePuzzle {
             Item3Sprite = addSprite("item3", 0, x, y, nWidth, nWidth, true, true);
             x += nWidth + 1;
 
-            addSprite("exit", R.drawable.inv_down, 422, 904, true, true);
+//            addSprite("exit", R.drawable.inv_down, 422, 904, true, true);
+            int nOkBtnWidth = 320;
+            int nOkBtnHeight = 160;
+            int y0 = 782, spy=30;
+            int x0 = (ViewMain.SIZE_IN_MEMORY-nOkBtnWidth)/2;
+            addSprite("exit", R.drawable.puz_btn_long, x0, y0, nOkBtnWidth, nOkBtnHeight, true, true);
+            addSprite("icon_cancel", R.drawable.icon_cancel, x0+(nOkBtnWidth-(nOkBtnHeight-spy))/2, y0+spy/2, nOkBtnHeight-spy, nOkBtnHeight-spy, true, false);
         }
 
         Item1Sprite.setResourceID( (Item1 != null ? Item1.ResID : 0) );
@@ -101,7 +107,7 @@ public class AScene_ChestContent extends AScenePuzzle {
                 AItem InvItem = app.Inventory.getSelectedItem();
                 if (InvItem != null)
                 {
-                    app.Inventory.ItemsHold_Remove(InvItem.ID);
+                    app.egRemoveFromInventory(InvItem.ID);
                     Item1 = InvItem;
                 }
             }
@@ -116,7 +122,7 @@ public class AScene_ChestContent extends AScenePuzzle {
                 AItem InvItem = app.Inventory.getSelectedItem();
                 if (InvItem != null)
                 {
-                    app.Inventory.ItemsHold_Remove(InvItem.ID);
+                    app.egRemoveFromInventory(InvItem.ID);
                     Item2 = InvItem;
                 }
             }
@@ -132,7 +138,7 @@ public class AScene_ChestContent extends AScenePuzzle {
                 AItem InvItem = app.Inventory.getSelectedItem();
                 if (InvItem != null)
                 {
-                    app.Inventory.ItemsHold_Remove(InvItem.ID);
+                    app.egRemoveFromInventory(InvItem.ID);
                     Item3 = InvItem;
                 }
             }

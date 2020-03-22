@@ -7,7 +7,7 @@ public class AScene02 extends AScene {
 
     public AScene02()
     {
-        ASprite oSprite = null;
+        //ASprite oSprite = null;
 
         addSprite("bg", R.drawable.s2_bg,       0,   0, true, false);
 

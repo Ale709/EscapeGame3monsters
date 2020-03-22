@@ -55,6 +55,7 @@ public class AScene01 extends AScene {
         if (sID.equals("prev_scene")) {
             app.egPlaySound( R.raw.snd_tap );
             app.egMoveToScene(app.SCENE02);
+            app.egSetProgressEventValue("have_game_progress", 1);
         }
         else if (sID.equals("next_scene")) {
             app.egPlaySound( R.raw.snd_tap );
@@ -62,6 +63,7 @@ public class AScene01 extends AScene {
                 app.egMoveToScene(app.SCENE04);
             else
                 app.egMoveToScene(app.SCENE45);
+            app.egSetProgressEventValue("have_game_progress", 1);
         }
         else if (sID.equals("speech_1")) {
         }
@@ -229,6 +231,8 @@ public class AScene01 extends AScene {
 
             SymbolsSets = new String[4];
             SymbolsSets[0] = SymbolsSets[1] = SymbolsSets[2] = SymbolsSets[3] = SYMBOLS_SET_ABC;
+
+            SAVEID = "PuzzleMTalk1";
         }
 
         @Override
@@ -252,6 +256,8 @@ public class AScene01 extends AScene {
 
             SymbolsSets = new String[4];
             SymbolsSets[0] = SymbolsSets[1] = SymbolsSets[2] = SymbolsSets[3] = SYMBOLS_SET_ABC;
+
+            SAVEID = "PuzzleMTalk2";
         }
 
         @Override
@@ -275,6 +281,8 @@ public class AScene01 extends AScene {
 
             SymbolsSets = new String[4];
             SymbolsSets[0] = SymbolsSets[1] = SymbolsSets[2] = SymbolsSets[3] = SYMBOLS_SET_ABC;
+
+            SAVEID = "PuzzleMTalk3";
         }
 
         @Override
