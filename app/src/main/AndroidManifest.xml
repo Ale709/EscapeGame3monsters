@@ -2,14 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ale059.escapegame3monsters">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name="com.ale059.escapegame3monsters.app"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name="com.ale059.escapegame3monsters.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,10 +20,15 @@
             </intent-filter>
 
         </activity>
+
         <service android:enabled="true" android:name="com.ale059.escapegame3monsters.ABgMusicService" />
+
         <meta-data
             android:name="com.google.android.gms.ads.com.APPLICATION_ID"
             android:value="ca-app-pub-5519702986389997~1982084097"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true"/>
     </application>
 
 </manifest>

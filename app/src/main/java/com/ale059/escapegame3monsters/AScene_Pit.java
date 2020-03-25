@@ -9,11 +9,36 @@ public class AScene_Pit extends AScene {
         addSprite("bg", R.drawable.s2pit_bg,       0,   0, true, false);
 
         addSprite("bone", R.drawable.s2pit_bone, 175, 422, true, true);
-        addSprite("worm",R.drawable.s2pit_worm, 705,  361, true, true);
+        addSprite("worm",R.drawable.s2pit_worm, 705,  361, false, true);
+        addSprite("worm_timer",0, 705,  361, false, false);
 
         //addSprite("exit", R.drawable.inv_down, 422, 904, true, true);
         addControlButtons("exit,menu,hint");
 
+    }
+
+    @Override
+    public void onShow() {
+        this.showAndHideSprites("", "worm", 0);
+        if (app.egGetProgressEventValue("s2_worm_take")==0)
+            if (app.egGetProgressEventValue("s2_bone_take")==1)
+                this.showAndHideSprites("worm_timer", "", 5000);
+
+        super.onShow();
+    }
+
+    @Override
+    public void onAnimationShowFinished( ASprite poSprite ) {
+        if (poSprite == null)
+            return;
+        String sSpriteID = poSprite.ID;
+        if (sSpriteID == null)
+            return;
+
+        if (sSpriteID == "worm_timer") {
+            showAndHideSprites("worm", "worm_timer", ViewMain.TIME_ANIMATE);
+            showAndHideSprites("", "worm_timer", 0);
+        }
     }
 
 
@@ -31,6 +56,10 @@ public class AScene_Pit extends AScene {
             app.egAddToInventory( "bone" );
             app.egSetProgressEventValue("s2_bone_take", 1);
             poSprite.setVisible(false, ViewMain.TIME_ANIMATE );
+
+            if (app.egGetProgressEventValue("s2_worm_take")==0)
+                    this.showAndHideSprites("worm_timer", "", 5000);
+
         }
         else if (sID.equals("worm"))
         {

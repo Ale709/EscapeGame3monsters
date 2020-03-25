@@ -185,7 +185,8 @@ public class AScene {
         else if (sID.equals("hint")) {
             //app.SceneMenu = app.ListScenes.get( app.SCENE_MENU_MAIN );
             //app.egPlaySound( R.raw.snd_cat );
-            app.egOpenMenuScene( app.SCENE_MENU_MAIN );
+            app.egOpenMenuScene( app.SCENE_MENU_ASK_HINT );
+            //app.egShowAdsBeforeHint();
         }
 
     }

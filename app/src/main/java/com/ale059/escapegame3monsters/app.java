@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Build;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +36,8 @@ public class app extends Application {
     {
         return mBaseContext;
     }
+
+    public static ActivityMain mMainActivity = null;
 
     public static final String getRString( int pnResId )
     {
@@ -127,7 +130,8 @@ public class app extends Application {
     public static int SCENE_MENU_ASK_NEW = uid();
     public static int SCENE_MENU_THEEND = uid();
     public static int SCENE_MENU_ABOUT = uid();
-    public static int SCENE_MENU_HINT = uid();
+    public static int SCENE_MENU_ASK_HINT = uid();
+    public static int SCENE_MENU_ADS_FAILED = uid();
 
     protected static HashMap<Integer, APuzzle> ListPuzzles = new HashMap<Integer, APuzzle>();
     public static int PUZZLE_CHEST1 = uid();
@@ -201,6 +205,8 @@ public class app extends Application {
 
         ListScenes.put(SCENE_MENU_MAIN, new ASceneMenuMain());
         ListScenes.put(SCENE_MENU_ASK_NEW, new ASceneMenuAskNew());
+        ListScenes.put(SCENE_MENU_ASK_HINT, new ASceneMenuAskHint());
+        ListScenes.put(SCENE_MENU_ADS_FAILED, new ASceneMenuAdsFailed());
         ListScenes.put(SCENE_MENU_THEEND, new ASceneMenuTheEnd());
 
         SceneMenu = null;
@@ -526,5 +532,12 @@ public class app extends Application {
         }
         intent.addFlags(flags);
         return intent;
+    }
+
+
+    public static void egShowAdsBeforeHint()
+    {
+        if (mMainActivity != null)
+            mMainActivity.showRewardedVideo();
     }
 }

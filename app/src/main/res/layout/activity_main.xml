@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         ads:adSize="SMART_BANNER"
         ads:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>
+
     <!--android:layout_centerHorizontal="true"-->
     <!--ads:adUnitId="ca-app-pub-5519702986389997/9879103020"-->
 
