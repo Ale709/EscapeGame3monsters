@@ -183,10 +183,8 @@ public class AScene {
             //app.egPlaySound( R.raw.snd_bones );
         }
         else if (sID.equals("hint")) {
-            //app.SceneMenu = app.ListScenes.get( app.SCENE_MENU_MAIN );
-            //app.egPlaySound( R.raw.snd_cat );
-            app.egOpenMenuScene( app.SCENE_MENU_ASK_HINT );
-            //app.egShowAdsBeforeHint();
+            //app.egOpenMenuScene( app.SCENE_MENU_ASK_HINT );
+            app.egCheckShowAdsBeforeHint();
         }
 
     }

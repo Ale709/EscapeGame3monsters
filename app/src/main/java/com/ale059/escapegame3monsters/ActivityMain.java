@@ -71,7 +71,8 @@ public class ActivityMain extends AppCompatActivity implements RewardedVideoAdLi
 
     @Override
     public void onRewarded(RewardItem reward) {
-        app.egPlaySound( R.raw.snd_cat); // Reward the user.
+        //app.egPlaySound( R.raw.snd_cat); // Reward the user.
+        app.egOpenMenuScene( app.SCENE_MENU_HINT );
     }
 
     @Override

@@ -132,6 +132,8 @@ public class app extends Application {
     public static int SCENE_MENU_ABOUT = uid();
     public static int SCENE_MENU_ASK_HINT = uid();
     public static int SCENE_MENU_ADS_FAILED = uid();
+    public static int SCENE_MENU_HINT = uid();
+
 
     protected static HashMap<Integer, APuzzle> ListPuzzles = new HashMap<Integer, APuzzle>();
     public static int PUZZLE_CHEST1 = uid();
@@ -207,6 +209,7 @@ public class app extends Application {
         ListScenes.put(SCENE_MENU_ASK_NEW, new ASceneMenuAskNew());
         ListScenes.put(SCENE_MENU_ASK_HINT, new ASceneMenuAskHint());
         ListScenes.put(SCENE_MENU_ADS_FAILED, new ASceneMenuAdsFailed());
+        ListScenes.put(SCENE_MENU_HINT, new ASceneMenuHint());
         ListScenes.put(SCENE_MENU_THEEND, new ASceneMenuTheEnd());
 
         SceneMenu = null;
@@ -325,9 +328,9 @@ public class app extends Application {
         mProgressEventsOrder.clear();
 
         egDefineProgressEvent("have_game_progress", 0);
-        egDefineProgressEvent("s45_open_door", 0);
+        egDefineProgressEvent("s45_open_door", 0).addHint( R.drawable.icon_hint );
         egDefineProgressEvent("s5_cheese_take", 0);
-        egDefineProgressEvent("s4_apple_take", 0);
+        egDefineProgressEvent("s4_apple_take", 0).addHint( R.drawable.icon_ok );
         egDefineProgressEvent("s4_mouse_owl", 0);
         egDefineProgressEvent("s4_scroll_take", 0);
         egDefineProgressEvent("s5_scroll_give", 0);
@@ -534,6 +537,29 @@ public class app extends Application {
         return intent;
     }
 
+
+    public static void egCheckShowAdsBeforeHint() {
+        ASceneMenuHint oScene = (ASceneMenuHint) ListScenes.get(app.SCENE_MENU_HINT);
+
+        if (oScene == null)
+            return;
+
+        for (AProgressEvent oEvent : mProgressEventsOrder) {
+            if (oEvent == null)
+                continue;
+            if (oEvent.HintResID == 0)
+                continue;
+            if (egGetProgressEventValue(oEvent.ID) == 0) {
+                oScene.setHintEvent(oEvent);
+                if (oEvent.IsHintAvailable == true)
+                    egOpenMenuScene(app.SCENE_MENU_HINT);
+                else
+                    app.egOpenMenuScene( app.SCENE_MENU_ASK_HINT );
+                    //mMainActivity.showRewardedVideo();
+                break;
+            }
+        }
+    }
 
     public static void egShowAdsBeforeHint()
     {
