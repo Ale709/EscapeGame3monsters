@@ -85,6 +85,7 @@ public class AScene05 extends AScene {
 
         if (app.egGetProgressEventValue("s1_fish_give")==1)
             if (app.egGetProgressEventValue("s5_cat_appear")==0) {
+                app.egPlaySound( R.raw.snd_cat );
                 this.showAndHideSprites("cat", "", ViewMain.TIME_ANIMATE);
                 app.egSetProgressEventValue("s5_cat_appear", 1);
             }

@@ -65,7 +65,16 @@ public class AScene01 extends AScene {
                 app.egMoveToScene(app.SCENE45);
             app.egSetProgressEventValue("have_game_progress", 1);
         }
+//        else if (sID.equals("monster3_1")) {
+//            app.egPlaySound( R.raw.snd_princess );
+//            app.egSetProgressEventValue("s1_ring_give", 1);
+//            showAndHideSprites("monster3_2", "monster3_1,speech_6", ViewMain.TIME_ANIMATE * 2);
+//            app.egRemoveFromInventory("ring");
+//        }
         else if (sID.equals("speech_1")) {
+            APuzzle oPuzzle = app.egGetPuzzle( app.PUZZLE_MTALK1 );
+            if (oPuzzle != null)
+                app.egShowPuzzle(oPuzzle);
         }
         else if (sID.equals("speech_2")) {
             APuzzle oPuzzle = app.egGetPuzzle( app.PUZZLE_MTALK2 );
@@ -82,7 +91,7 @@ public class AScene01 extends AScene {
         {
             if (sID.equals("monster1_1") || sID.equals("monster2_1") || sID.equals("monster3_1")) {
                 if (app.egIsSelectedItem("potion")) {
-                    app.egPlaySound( R.raw.snd_spell );
+                    //app.egPlaySound( R.raw.snd_spell );
                     app.egSetProgressEventValue("s1_potion_give", 1);
                     showAndHideSprites("", "speech_0", 0);
                     showAndHideSprites("speech_1,speech_2,speech_3", "", ViewMain.TIME_ANIMATE);

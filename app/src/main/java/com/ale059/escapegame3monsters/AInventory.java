@@ -283,7 +283,7 @@ public class AInventory extends AScene {
             oNewItem = ItemsHold_Replace("cheese_worm", "cheese");
             if (oNewItem != null) {
                 app.egAddToInventory("worm");
-                app.egSetProgressEventValue("s2_worm2_take", 1);
+                app.egSetProgressEventValue("s2_worm_take", 1);
                 app.egShowItem("worm");
                 //ItemsHold_Add("worm");
                 //if (app.SceneItemView.Visible)
@@ -320,7 +320,7 @@ public class AInventory extends AScene {
             oNewItem = ItemsHold_Replace("cheese", "cheese_worm");
             if (oNewItem != null) {
                 ItemsHold_Remove("worm");
-                app.egSetProgressEventValue("s2_worm2_take", 0);
+                app.egSetProgressEventValue("s2_worm_take", 0);
                 app.egShowItem("cheese_worm");
                 //if (app.SceneItemView.Visible)
                 //    app.SceneItemView.ShowItem( oNewItem );

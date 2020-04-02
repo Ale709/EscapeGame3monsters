@@ -49,7 +49,9 @@ public class ViewMain extends View {
 
         }
             int nScrWidth = this.getWidth(), nScrHeight = this.getHeight();
-            float nRectScale = Math.min( ((float)nScrWidth)/ mBmpInMemory.getWidth(), ((float)nScrHeight)/ mBmpInMemory.getHeight() );
+            //float nRectScale = Math.min( ((float)nScrWidth)/ mBmpInMemory.getWidth(), ((float)nScrHeight)/ mBmpInMemory.getHeight() );
+            float nRectScale = ((float)nScrWidth)/ mBmpInMemory.getWidth();
+            this.setMinimumHeight( (int)((float)mBmpInMemory.getHeight()*nRectScale) );
 
             //int nInvBlockHeight = SIZE_INV*nRectSize/SIZE_IN_MEMORY;
             int nInvBlockHeight = (int)(((float)SIZE_INV)*nRectScale);

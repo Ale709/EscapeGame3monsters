@@ -20,7 +20,7 @@ public class AScene_Pit extends AScene {
     @Override
     public void onShow() {
         this.showAndHideSprites("", "worm", 0);
-        if (app.egGetProgressEventValue("s2_worm_take")==0)
+        if (app.egGetProgressEventValue("s2_worm2_take")==0)
             if (app.egGetProgressEventValue("s2_bone_take")==1)
                 this.showAndHideSprites("worm_timer", "", 5000);
 
@@ -57,19 +57,22 @@ public class AScene_Pit extends AScene {
             app.egSetProgressEventValue("s2_bone_take", 1);
             poSprite.setVisible(false, ViewMain.TIME_ANIMATE );
 
-            if (app.egGetProgressEventValue("s2_worm_take")==0)
+            if (app.egGetProgressEventValue("s2_worm2_take")==0)
                     this.showAndHideSprites("worm_timer", "", 5000);
 
         }
         else if (sID.equals("worm"))
         {
             app.egAddToInventory( "worm" );
-            app.egSetProgressEventValue("s2_worm_take", 1);
+            app.egSetProgressEventValue("s2_worm2_take", 1);
             poSprite.setVisible(false, ViewMain.TIME_ANIMATE );
         }
         else if (sID.equals("exit"))
         {
             app.egMoveToScene( app.SCENE02 );
         }
+
+
+        super.onSpriteTouch(poSprite, pX, pY);
     }
 }

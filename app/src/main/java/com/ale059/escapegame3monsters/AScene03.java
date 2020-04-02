@@ -41,6 +41,7 @@ public class AScene03 extends AScene {
 
         if (app.egGetProgressEventValue("s1_bone_give")==1)
             if (app.egGetProgressEventValue("s3_skeleton_appear")==0) {
+                app.egPlaySound( R.raw.snd_bones );
                 this.showAndHideSprites("skeleton_sit", "chair", ViewMain.TIME_ANIMATE);
                 app.egSetProgressEventValue("s3_skeleton_appear", 1);
             }

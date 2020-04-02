@@ -11,14 +11,17 @@ public class ASceneMenuHint extends AScene {
 
     public ASceneMenuHint()
     {
-        ASprite oSprite = null;
-        oSprite = addSprite("bg", R.drawable.bg_black_shade,     0,   0, ViewMain.SIZE_IN_MEMORY, ViewMain.SIZE_IN_MEMORY+ViewMain.SIZE_INV, true, false);
+
+        addSprite("bg", R.drawable.bg_black_shade,     0,   0, ViewMain.SIZE_IN_MEMORY, ViewMain.SIZE_IN_MEMORY+ViewMain.SIZE_INV, true, false);
+        addSprite("bg", R.drawable.bg_black_shade,     0,   0, ViewMain.SIZE_IN_MEMORY, ViewMain.SIZE_IN_MEMORY+ViewMain.SIZE_INV, true, false);
+
         ItemSprite = addSprite("hint", 0, 0, 0, true, false);
 
         //addSprite("exit", R.drawable.inv_down, 422, 904, true, true);
         int nOkBtnWidth = 320;
-        int nOkBtnHeight = 160;
-        int y0 = 782+ViewMain.SIZE_INV, spy=30;
+        int nOkBtnHeight = 160-15;
+        int spy=30;
+        int y0 = ViewMain.SIZE_IN_MEMORY - spy/2;
         int x0 = (ViewMain.SIZE_IN_MEMORY-nOkBtnWidth)/2;
 
         //x0 += x0 + nOkBtnWidth;
@@ -49,6 +52,11 @@ public class ASceneMenuHint extends AScene {
                     ItemSprite.Height = bmp.getHeight();
                     ItemSprite.X = (ViewMain.SIZE_IN_MEMORY-ItemSprite.Width)/2;
                     ItemSprite.Y = (ViewMain.SIZE_IN_MEMORY-ItemSprite.Height)/2;
+                    if (ItemSprite.Y<0)
+                    {
+                        ItemSprite.Y = 0;
+                        ItemSprite.Height = ViewMain.SIZE_IN_MEMORY;
+                    }
                 }
             }
         }

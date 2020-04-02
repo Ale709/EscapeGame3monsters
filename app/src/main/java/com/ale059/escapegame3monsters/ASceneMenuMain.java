@@ -59,7 +59,7 @@ public class ASceneMenuMain extends AScene {
             app.egOpenMenuScene( 0 );
             //app.SceneMenu = null;
         else if (sID.equals("menu_about"))
-            app.egOpenMenuScene( app.SCENE_MENU_THEEND );
+            app.egOpenMenuScene( app.SCENE_MENU_ABOUT );
 
         else if (sID.equals("menu_music"))
         {

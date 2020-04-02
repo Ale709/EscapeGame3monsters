@@ -64,7 +64,8 @@ public class ActivityMain extends AppCompatActivity implements RewardedVideoAdLi
         loadRewardedVideoAd();
     }
     private void loadRewardedVideoAd() {
-        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
+        //mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build()); // TestAd
+        mRewardedVideoAd.loadAd("ca-app-pub-5519702986389997/4365041564", new AdRequest.Builder().build());
         // ca-app-pub-5519702986389997/4365041564
     }
 
@@ -85,8 +86,9 @@ public class ActivityMain extends AppCompatActivity implements RewardedVideoAdLi
         //Toast.makeText(this, "onRewardedVideoAdLeftApplication", Toast.LENGTH_SHORT).show();
     }
     @Override public void onRewardedVideoAdFailedToLoad(int errorCode) {
-        //Toast.makeText(this, "onRewardedVideoAdFailedToLoad", Toast.LENGTH_SHORT).show();
-        app.egOpenMenuScene( app.SCENE_MENU_ADS_FAILED );
+        //Toast.makeText(this, "onRewardedVideoAdFailedToLoad "+errorCode, Toast.LENGTH_SHORT).show();
+        if (app.egGetProgressEventValue("have_game_progress")==1)
+            app.egOpenMenuScene( app.SCENE_MENU_ADS_FAILED );
 
     }
     @Override public void onRewardedVideoAdLoaded() {

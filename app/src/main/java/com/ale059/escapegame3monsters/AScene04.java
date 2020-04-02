@@ -127,6 +127,7 @@ public class AScene04 extends AScene {
                 app.egRemoveFromInventory("broom");
                 showAndHideSprites("door_2", "door_1", ViewMain.TIME_ANIMATE);
                 app.egSetProgressEventValue("s4_broom_use", 1);
+                app.egSetProgressEventValue("s4_door_hint", 0); // to trigger hint
             }
         }
         else if (sID.equals("door_2")) {
@@ -145,8 +146,16 @@ public class AScene04 extends AScene {
     @Override
     public void onShow() {
 
+        if (app.egGetProgressEventValue("s4_princess_appear")==1) {
+            if (app.egGetProgressEventValue("s4_bookcase_moved") == 0) {
+                showAndHideSprites("princess_m", "princess", ViewMain.TIME_ANIMATE);
+            }
+        }
+
+
         if (app.egGetProgressEventValue("s1_ring_give")==1) {
             if (app.egGetProgressEventValue("s4_princess_appear") == 0) {
+                app.egPlaySound( R.raw.snd_princess );
                 this.showAndHideSprites("princess", "", ViewMain.TIME_ANIMATE);
                 app.egSetProgressEventValue("s4_princess_appear", 1);
             }
@@ -193,18 +202,18 @@ public class AScene04 extends AScene {
         }
         else if (sSpriteID == "princess")
         {
-            if (app.egGetProgressEventValue("s4_bookcase_move")==0) {
+            if (app.egGetProgressEventValue("s4_bookcase_moved")==0) {
                 showAndHideSprites("princess_m", "princess", ViewMain.TIME_ANIMATE);
             }
         }
         else if (sSpriteID == "princess_m")
         {
             app.egPlaySound( R.raw.snd_bookcase_move );
+            app.egSetProgressEventValue("s4_bookcase_moved", 1);
             showAndHideSprites("bookcase_m,door_1", "bookcase", ViewMain.TIME_ANIMATE*3);
         }
         else if (sSpriteID == "bookcase_m")
         {
-            app.egSetProgressEventValue("s4_bookcase_move", 1);
             showAndHideSprites("princess", "princess_m", ViewMain.TIME_ANIMATE);
             //app.egSetProgressEventValue("s4_princess_appear", 1);
         }

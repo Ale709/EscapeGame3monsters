@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         ads:adSize="SMART_BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>
+        ads:adUnitId="ca-app-pub-5519702986389997/9879103020"></com.google.android.gms.ads.AdView>
+
+    <!--ads:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView> testAd -->
 
     <!--android:layout_centerHorizontal="true"-->
     <!--ads:adUnitId="ca-app-pub-5519702986389997/9879103020"-->
@@ -23,12 +25,11 @@
         android:layout_weight="1"
         tools:context=".ActivityMain"></com.ale059.escapegame3monsters.ViewMain>
 
-    <com.google.android.gms.ads.AdView
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/adBannerBottom"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    ads:adSize="SMART_BANNER"
-    ads:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adBannerBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="ca-app-pub-5519702986389997/9879103020"></com.google.android.gms.ads.AdView>
 
 </LinearLayout>
